@@ -23,7 +23,14 @@ if (!email) {
 
   const result = await validator.verify(email);
   console.log("result",result);
-  res.render('index',{info:result})
+  if(result.validMailbox){
+    console.log(`${email} is Valid`)
+    res.render('index',{info:`${email} is Valid`})
+  }else{
+    console.log(`${email} is not Valid`)
+    res.render('index',{info:`${email} is not Valid`})
+  }
+
 });
 app.post('/verifybulk', async (req, res) => {
   const email = req.body.emails;
@@ -36,8 +43,16 @@ app.post('/verifybulk', async (req, res) => {
     console.log("email",email);
 
     const result = await validator.verify(email);
-    console.log(`${email}: ${JSON.stringify(result)}`);
-    res.write(`${email}: ${JSON.stringify(result)}\n`);
+    if(result.validMailbox){
+      console.log(`${email}: is Valid\n`);
+      res.write(`${email}: is Valid\n`);
+  
+     }else{
+      console.log(`${email}: is not Valid\n`);
+      res.write(`${email}: is not Valid\n`);
+  
+     }
+
   }
   res.end();
 })();
