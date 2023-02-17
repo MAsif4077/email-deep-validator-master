@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Emails Validations</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- <div class="text-center" style="margin-top: 10px;">
+        <a href="http://23.239.13.159">
+            <button >Do you want bulk email verification?</button>
+          </a> -->
+     </div>
+<div class="container">
+    <h2 class="text-center">
+        Email verification
+    </h2>
+    <form action="/verifysingle" method="post">
+        <div class="form-group" style="width: 300px; margin-left: 420px;">
+            <label for="emails">Enter Email Here</label>
+            <textarea name="gmail" class="form-control" maxlength="" required cols="1" rows="1"></textarea>
+        </div>
+    
+        <div class="form-group" style="width: 300px; margin-left: 420px;">
+            <button id="button" class="btn btn-block btn-primary">Verify Email</button>
+        </div>
+    </form>
+    <%if(info){%>
+    <h3 class="text-center" style="forced-color-adjust: grid-row;">wellFormed: <%=info.wellFormed %></h3>
+    <h3 class="text-center" style="forced-color-adjust: grid-row;">validDomain: <%=info.validDomain %></h3>
+    <h3 class="text-center" style="forced-color-adjust: grid-row;">validMailbox: <%=info.validMailbox %></h3>
+   <%}%>
+</div>
+    
+</body>
+</html>
