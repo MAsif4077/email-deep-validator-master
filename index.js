@@ -25,6 +25,7 @@ app.post('/verifyOne', (req, res) => {
     console.log(emailAddress);
     validate(emailAddress)
     .then((result) => {
+      
       if(result.valid==true){
         console.log(`Accept All`)
         res.render('index',{info:`${email} is Accept All`});
@@ -51,14 +52,6 @@ app.post('/verifyOne', (req, res) => {
   }
    })
 
-// app.post('/verifysingle', async (req, res) => {
-//  var email=req.body.gmail;
-//  console.log(email);
-//  const domain = email.split('@')[1];
-//  const emailAddress = `${randomstring.generate(10)}@${domain}`;
-//  console.log(emailAddress);
-
-// });
 app.post('/verifybulk', async (req, res) => {
   const email = req.body.emails;
   const lines = email.split(/\n/);
