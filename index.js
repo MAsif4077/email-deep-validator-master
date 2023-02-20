@@ -1,8 +1,8 @@
 const express = require('express');
 const EmailValidator = require('./lib/index');
-var verifier = require('email-verify');
-var infoCodes = verifier.infoCodes;
 const bodyParser = require('body-parser');
+const randomstring = require('randomstring');
+const { validate } = require('deep-email-validator');
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -13,65 +13,50 @@ app.get('/', (req, res) => {
   res.render('bulkEmails',{info:''});
 })
 
-app.get('/verifysingle', (req, res) => {
-    res.render('index',{flag:''});
+app.get('/verifyOne', (req, res) => {
+    res.render('index',{info:''});
 })
-app.post('/verifysingle', async (req, res) => {
+app.post('/verifyOne', (req, res) => {
   try{
     var email=req.body.gmail;
-    verifier.verify(email, function( err, info ){
-      console.log("email",email);
-      if( err ) console.log(err);
-      else{
-        console.log( "Success (T/F): " + info.success );
-        console.log( "Info: " + info.info );
-        res.render('index',{flag:`${info.info}`})
-     
-        // //Info object returns a code which representing a state of validation:
-     
-        // //Connected to SMTP server and finished email verification
-        // console.log(info.code === infoCodes.finishedVerification);
-     
-        // //Domain not found
-        // console.log(info.code === infoCodes.domainNotFound);
-     
-        // //Email is not valid
-        // console.log(info.code === infoCodes.invalidEmailStructure);
-     
-        // //No MX record in domain name
-        // console.log(info.code === infoCodes.noMxRecords);
-     
-        // //SMTP connection timeout
-        // console.log(info.code === infoCodes.SMTPConnectionTimeout);
-     
-        // //SMTP connection error
-        // console.log(info.code === infoCodes.SMTPConnectionError)
-      }
-    });
+    console.log(email);
+    const domain = email.split('@')[1];
+    const emailAddress = `${randomstring.generate(10)}@${domain}`;
+    console.log(emailAddress);
+    validate(emailAddress)
+    .then((result) => {
+      if(result.valid==true){
+        console.log(`Accept All`)
+        res.render('index',{info:`${email} is Accept All`});
   
+      }else{
+          validate(email)
+       .then((result) => {
+         if(result.valid){
+           console.log("Valid");
+           res.render('index',{info:`${email} is valid`});
+  
+         }else{
+           console.log("Invalid");
+           res.render('index',{info:`${email} is not valid`});
+         }
+       })
+      }
+   })
+  
+   
 
   }catch(err){
-    res.render('index',{flag:`${err}`})
+    res.render('index',{info:err});
   }
+   })
 
-
-})
 // app.post('/verifysingle', async (req, res) => {
 //  var email=req.body.gmail;
-// console.log(email);
-// if (!email) {
-//     return res.status(400).send('Email parameter is missing');
-//   }
-
-//   const result = await validator.verify(email);
-//   console.log("result",result);
-//   if(result.validMailbox){
-//     console.log(`${email} is Valid`)
-//     res.render('index',{info:`${email} is Valid`})
-//   }else{
-//     console.log(`${email} is not Valid`)
-//     res.render('index',{info:`${email} is not Valid`})
-//   }
+//  console.log(email);
+//  const domain = email.split('@')[1];
+//  const emailAddress = `${randomstring.generate(10)}@${domain}`;
+//  console.log(emailAddress);
 
 // });
 app.post('/verifybulk', async (req, res) => {

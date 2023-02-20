@@ -17,7 +17,7 @@
     <h2 class="text-center">
         Email verification
     </h2>
-    <form action="/verifysingle" method="post">
+    <form action="/verifyOne" method="post">
         <div class="form-group" style="width: 300px; margin-left: 420px;">
             <label for="emails">Enter Email Here</label>
             <textarea name="gmail" class="form-control" maxlength="" required cols="1" rows="1"></textarea>
@@ -27,8 +27,8 @@
             <button id="button" class="btn btn-block btn-primary">Verify Email</button>
         </div>
     </form>
-    <%if(flag){%>
-    <h3 class="text-center" style="forced-color-adjust: grid-row;"><%=flag %></h3>
+    <%if(info){%>
+    <h3 class="text-center" style="forced-color-adjust: grid-row;"><%=info %></h3>
    <%}%>
 </div>
     
